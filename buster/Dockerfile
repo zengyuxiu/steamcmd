@@ -3,7 +3,7 @@
 ############################################################
 FROM debian:buster-slim
 
-LABEL maintainer="walentinlamonos@gmail.com"
+LABEL maintainer="zengyuxiu@hotmail.com"
 ARG PUID=1000
 
 ENV USER steam
@@ -18,6 +18,7 @@ ENV STEAMCMDDIR "${HOMEDIR}/steamcmd"
 # Download SteamCMD
 # Extract and delete archive
 RUN set -x \
+	&& sed -i 's/deb.debian.org/mirrors.cloud.tencent.com/g' /etc/apt/sources.list \
 	&& dpkg --add-architecture i386 \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
@@ -25,9 +26,10 @@ RUN set -x \
 		lib32gcc1=1:8.3.0-6 \
 		wget=1.20.1-1.1 \
 		ca-certificates=20200601~deb10u2 \
-		nano=3.2-3 \
+		vim=2:8.1.0875-5 \
 		libsdl2-2.0-0:i386=2.0.9+dfsg1-1 \
 		curl=7.64.0-4+deb10u1 \
+		libcurl4-gnutls-dev:i386=7.64.0-4+deb10u1 \
 	&& useradd -u "${PUID}" -m "${USER}" \
         && su "${USER}" -c \
                 "mkdir -p \"${STEAMCMDDIR}\" \
